@@ -1,6 +1,6 @@
-# words
-to learn and memorize english words
-
-for kiky
-
-by luzyx
+{
+  "单词": "absent",
+  "意思": "不在场的",
+  "词性": "adj",
+  "音标": "absent"
+}
