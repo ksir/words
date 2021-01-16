@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>英语单词记忆软件</title>
 	<style type="text/css">
 		table{width:300px;border-collapse:collapse;}
@@ -9,74 +10,171 @@
 		.wdTitle{width:60px;color:black;text-align:center;}
 		.wdContent{width:140px;color:blue;padding-left:5px;}
 		.wdLocation{width:100px;}
+		.IPA{font-family: "Segoe UI", Verdana,Lucida Sans Regular,Lucida Sans Unicode,Arial,sans-serif;}
 	</style>
 </head>
 <body>
 <table cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="wdTitle">共<span id="spnTatol"></span>个</td>
-		<td class="wdContent">当前第<span id="spnCurrent" style="font-size:16pt;color:blue;font-weight:bold;">999</span>个</td>
-		<td class="wdLocation">
-			<input type="text" value="1" style="width:40px;">
-			<button id="btnGo" style="font-size:12px">转到</button>
+		<td class="wdTitle" style="font-size:12px;" colspan="3">
+		共<span id="spnTotal"></span>个
+		当前第<span id="spnCurrent" style="font-size:16pt;color:blue;font-weight:bold;"></span>个
+			<button id="btnPrevious" style="font-size:12px" onClick="showPrevious();"><<</button> 
+			<button id="btnNext" style="font-size:12px" onClick="showNext();">>></button> 
+			<input type="text" id="txtNum" value="1" style="width:20px;">
+			<button id="btnGo" style="font-size:12px" onClick="locate();">GO</button>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3" style="text-align:center;">
-			<button id="btnPrevious" style="font-size:12px"><<</button> 
-			<button id="btnWord" style="font-size:12px" onClick="showWord()">看单词</button> 
-			<button id="btnPhonetic" style="font-size:12px" onClick="showPhonetic()">看音标</button> 
-			<button id="btnMeaning" style="font-size:12px" onClick="showMeaning()">看词义</button>
-			<button id="btnNext" style="font-size:12px">>></button> 
-		</td>
+		<td class="wdTitle"><button id="btnWord" style="font-size:12px" onClick="showWord()">单词</button></td>
+		<td class="wdContent" colspan="2"><span id="spnWord"></span></td>
 	</tr>
 	<tr>
-		<td class="wdTitle">单词：</td>
-		<td class="wdContent" id="tdWord" colspan="2"></td>
-	</tr>
-	<tr>
-		<td class="wdTitle">音标：</td>
-		<td class="wdContent" id="tdPhonetic"></td>
-		<td style="text-align:center;">
-			<audio id="sndPhonetic" src="./mp3/blue.mp3" dispaly="none"></audio>
-			<button id="btnPlay" onclick="document.getElementById('sndPhonetic').play();" display="none">
+		<td class="wdTitle"><button id="btnPhonetic" style="font-size:12px" onClick="showPhonetic()">音标</button></td>
+		<td class="wdContent" style="border-right:none;"><span id="spnPhonetic" class="IPA"></span></td>
+		<td style="width:50px;text-align:center;border-left:none;">
+			<audio id="sndPhonetic" src="" style="display:none;"></audio>
+			<button id="btnPlay" onclick="document.getElementById('sndPhonetic').play();" style="visibility:hidden;">
 			<span style="font-size:12pt;">♫</span>
 			</button>
 		</td>
 	</tr>
 	<tr>
-		<td class="wdTitle">词义：</td>
-		<td class="wdContent" id="tdMeaning" colspan="2"></td>
+		<td class="wdTitle"><button id="btnMeaning" style="font-size:12px" onClick="showMeaning()">词义</button></td>
+		<td class="wdContent" colspan="2"><span id="spnMeaning"></span></td>
 	</tr>
 	<tr>
-		<td class="wdTitle">例句：</td>
-		<td class="wdContent" id="tdSentence" colspan="2"></td>
+		<td class="wdTitle"><button id="btnMeaning" style="font-size:12px" onClick="showSentence()">例句</button></td>
+		<td class="wdContent" colspan="2"><span id="spnSentence"></span></td>
+	</tr>
+	<tr>
+		<td class="wdTitle"><button id="btnMeaning" style="font-size:12px" onClick="showMemorize()">记忆</button></td>
+		<td class="wdContent" colspan="2"><span id="spnMemorize"></span></td>
+	</tr>
+	<tr>
+		<td class="wdTitle"><button id="btnMeaning" style="font-size:12px" onClick="showLenovo()">联想</button></td>
+		<td class="wdContent" colspan="2"><span id="spnLenovo"></span></td>
 	</tr>
 </table>
+
+<script src="words.js"></script>
 <script>
 	//定义显示单词的函数
 	function showWord()
 	{
-		var oWord=document.getElementById("tdWord");
-		oWord.innerText="blue";
+		var oWord=document.getElementById("spnWord");
+		oWord.style.display="block";
 	}
 	//定义显示音标的函数
 	function showPhonetic()
 	{
-		var oPhonetic=document.getElementById("tdPhonetic");
-		oPhonetic.innerText="[blu:]";
+		var oPhonetic=document.getElementById("spnPhonetic");
+		oPhonetic.style.display="block";
 		var oPlay=document.getElementById("btnPlay");
-		oPlay.visible=true;
+		oPlay.style.visibility="";
 	}
-	//定义显示词义和例句的函数
+	//定义显示词义的函数
 	function showMeaning()
 	{
-		var oMeaning=document.getElementById("tdMeaning");
-		oMeaning.innerHTML="adj. 蓝色的；忧郁的；悲观的<br>n.  蓝色<br>vt 使/把……变成蓝色";
-		var oSentence=document.getElementById("tdSentence");
-		oSentence.innerHTML="The sky was blue at that time.";
+		var oMeaning=document.getElementById("spnMeaning");
+		oMeaning.style.display="block";
 	}
-
+	//定义显示例句的函数
+	function showSentence()
+	{
+		var oSentence=document.getElementById("spnSentence");
+		oSentence.style.display="block";
+	}
+	//定义显示记忆方法的函数
+	function showMemorize()
+	{
+		var oMemorize=document.getElementById("spnMemorize");
+		oMemorize.style.display="block";
+	}
+	//定义显示联想的函数
+	function showLenovo()
+	{
+		var oLenovo=document.getElementById("spnLenovo");
+		oLenovo.style.display="block";
+	}	
+	//定义转到函数
+	function locate()
+	{
+		var oNum=document.getElementById("txtNum");
+		var intNum=parseInt(oNum.value);
+		if (intNum.toString()=="NaN") 
+		{
+			intNum=1;
+			oNum.value=intNum;
+		}
+		var oCurrent=document.getElementById("spnCurrent");
+		oCurrent.innerHTML=intNum;
+		var oWord=document.getElementById("spnWord");
+		oWord.innerHTML=words[intNum][0];
+		oWord.style.display="none";
+		var oPhonetic=document.getElementById("spnPhonetic");
+		oPhonetic.innerHTML=words[intNum][1];
+		oPhonetic.style.display="none";
+		var oSound=document.getElementById("sndPhonetic");
+		oSound.src="./mp3/"+words[intNum][0]+".mp3";
+		var oPlay=document.getElementById("btnPlay");
+		oPlay.style.visibility="hidden";
+		var oMeaning=document.getElementById("spnMeaning");
+		oMeaning.innerHTML=words[intNum][2];
+		oMeaning.style.display="none";
+		var oSentence=document.getElementById("spnSentence");
+		oSentence.innerHTML=words[intNum][3];
+		oSentence.style.display="none";
+		var oMemorize=document.getElementById("spnMemorize");
+		oMemorize.innerHTML=words[intNum][4];
+		oMemorize.style.display="none";
+		var oLenovo=document.getElementById("spnLenovo");
+		oLenovo.innerHTML=words[intNum][5];
+		oLenovo.style.display="none";
+	}
+	//定义上一个函数
+	function showPrevious()
+	{
+		var intTotal=words.length-1;
+		var oNum=document.getElementById("txtNum");
+		var intCurrent=parseInt(oNum.value);
+		if (intCurrent.toString()=="NaN")
+		{
+			intCurrent=1;
+			oNum.value=intCurrent;
+		}
+		else
+		{
+			intCurrent=intCurrent-1;
+			if (intCurrent<1) intCurrent=intTotal;
+			oNum.value=intCurrent;
+		}
+		locate();
+	}
+	//定义下一个函数
+	function showNext()
+	{
+		var intTotal=words.length-1;
+		var oNum=document.getElementById("txtNum");
+		var intCurrent=parseInt(oNum.value);
+		if (intCurrent.toString()=="NaN")
+		{
+			intCurernt=1;
+			oNum.value=intCurernt;
+		}
+		else
+		{
+			intCurrent=intCurrent+1;
+			if (intCurrent>intTotal) intCurrent=1;
+			oNum.value=intCurrent;
+		}
+		locate();
+	}
+	//显示基本信息
+	var intTotal=words.length-1;
+	var oTotal=document.getElementById("spnTotal");
+	oTotal.innerHTML=intTotal;
+	locate();
 </script>
 </body>
 </html>
