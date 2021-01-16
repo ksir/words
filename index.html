@@ -2,18 +2,82 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
-    <title>test</title>
+    <title>英语单词记忆软件</title>
+	<style type="text/css">
+		table{width:300px;border-collapse:collapse;}
+		td{height:32px;line-height:32px;border:solid 1px #c3c3c3;color:#000000;}
+		.wdTitle{width:60px;color:black;text-align:center;}
+		.wdContent{width:240px;color:blue;padding-left:5px;}
+	</style>
 </head>
 <body>
-<a href="phonetic.html">英语音标</a>
-<br>
-<button id="btnTest" target="_self" onclick="showMsg()">测试按钮</button>
-<br>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="2" id="tdInformation" style="font-size:12px;padding:5px;">
+		</td>
+	</tr>
+	<tr>
+		<td class="wdTitle">单词：</td>
+		<td class="wdContent" id="tdWord"></td>
+	</tr>
+	<tr>
+		<td class="wdTitle">音标：</td>
+		<td class="wdContent" id="tdPhonetic"></td>
+	</tr>
+	<tr>
+		<td class="wdTitle">词义：</td>
+		<td class="wdContent" id="tdMeaning"></td>
+	</tr>
+	<tr>
+		<td class="wdTitle">例句：</td>
+		<td class="wdContent" id="tdSentence"></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:center;">
+			<button id="btnWord" style="font-size:12px" onClick="showWord()">看单词</button> 
+			<button id="btnPhonetic" style="font-size:12px" onClick="showPhonetic()">看音标</button> 
+			<button id="btnMeaning" style="font-size:12px" onClick="showMeaning()">看词义</button>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align:center;">
+			<button id="btnPrevious" style="font-size:12px">上一个</button> 
+			<button id="btnNext" style="font-size:12px">下一个</button> 
+			<input type="text" value="1" style="width:20px;">
+			<button id="btnGo" style="font-size:12px">转到</button>
+		</td>
+	</tr>
+</table>
 <script>
-	function showMsg()
+	//定义加载初始信息的函数，用来载入单词
+	function showInformation(strNum)
 	{
-		location.href="phonetic.html";
+		var oInformation=document.getElementById("tdInformation");
+		
+		oInformation.innerHTML="第 <span style='font-size:16pt;color:blue;'>"+strNum+"</span> 个单词加载完成。<br>请点看单词、看音标、看词义选择学习方式";
 	}
+	//定义显示单词的函数
+	function showWord()
+	{
+		var oWord=document.getElementById("tdWord");
+		oWord.innerText="blue";
+	}
+	//定义显示音标的函数
+	function showPhonetic()
+	{
+		var oPhonetic=document.getElementById("tdPhonetic");
+		oPhonetic.innerText="[blu:]";
+	}
+	//定义显示词义和例句的函数
+	function showMeaning()
+	{
+		var oMeaning=document.getElementById("tdMeaning");
+		oMeaning.innerHTML="adj. 蓝色的；忧郁的；悲观的<br>n.  蓝色<br>vt 使/把……变成蓝色";
+		var oSentence=document.getElementById("tdSentence");
+		oSentence.innerHTML="The sky was blue at that time.";
+	}
+	//
+	showInformation("1");
 </script>
 </body>
 </html>
